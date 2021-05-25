@@ -1,33 +1,20 @@
 package frame;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.io.InputStream;
 
 public class Box {
     private boolean bomb, flagged, clicked;
     private int value;
-    String imagePath;
+    private String imagePath;
+    JButton button;
 
-    public Box() {
+    public Box() throws IOException {
+        button=new JButton();
         setBomb(false);
         setClicked(false);
         setFlagged(false);
         setValue(0);
-    }
-
-    ImageIcon setImage() throws IOException {
-        String path = "/res/img/0.png";
-        InputStream imgStream = Frame.class.getResourceAsStream(path);
-        BufferedImage myImg = ImageIO.read(imgStream);
-        Image image = myImg.getScaledInstance(50, 50, Image.SCALE_FAST);
-        ImageIcon ii = new ImageIcon(image);
-        JLabel bgImage = new JLabel(ii);
-        bgImage.setSize(10, 10);
-        return ii;
     }
 
     public boolean isBomb() {
@@ -42,16 +29,20 @@ public class Box {
         return flagged;
     }
 
-    public void setFlagged(boolean flagged) {
+    public void setFlagged(boolean flagged) throws IOException {
         this.flagged = flagged;
+        setImagePath();
+        setImage();
     }
 
     public boolean isClicked() {
         return clicked;
     }
 
-    public void setClicked(boolean clicked) {
+    public void setClicked(boolean clicked) throws IOException {
         this.clicked = clicked;
+        setImagePath();
+        setImage();
     }
 
     public int getValue() {
@@ -79,6 +70,11 @@ public class Box {
             }
         }
         this.imagePath = p + ".png";
+    }
+
+    public void setImage() throws IOException {
+        ImageManager manager=new ImageManager(FrameManager.getBoxSize());
+        button.setIcon(manager.getImage(getImagePath()));
     }
 
 }

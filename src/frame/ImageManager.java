@@ -1,0 +1,47 @@
+package frame;
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
+
+public class ImageManager {
+    private static final String TAG = "ImageManager";
+    static Map<String, ImageIcon> map = new HashMap<>();
+    private final int boxSize;
+
+    public ImageManager(int boxSize) {
+        this.boxSize = boxSize;
+    }
+
+    ImageIcon getImage(String path) throws IOException {
+        System.out.print("\n[ImageManager.getImage]\t");
+        System.out.println("path = " + path);
+
+        path="/res/img/"+path;
+
+        if (map.containsKey(path)) {
+            System.out.println("Target image found in map");
+            return map.get(path);
+        } else {
+            System.out.println("Target image not found in map");
+            InputStream imgStream = Frame.class.getResourceAsStream(path);
+            ImageIcon ii=null;
+            try {
+                BufferedImage myImg = ImageIO.read(imgStream);
+                Image image = myImg.getScaledInstance(boxSize, boxSize, Image.SCALE_FAST);
+                ii = new ImageIcon(image);
+            } catch (Exception e){
+                System.out.println("Failed to load image: "+path);
+                System.exit(1);
+            }
+            System.out.println("Target image loaded from disk");
+            map.put(path, ii);
+            return ii;
+        }
+    }
+}
