@@ -1,32 +1,36 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class Screen{
+public class Screen {
     private JFrame frame;
     private Container pane;
     private int minHeight = 768, minWidth = 1024;
-    private Dimension screenRes=new Dimension();
+    private Dimension screenRes = new Dimension();
 
-    Screen(){
-        frame = new JFrame("Battleship");
+    public JFrame getFrame() {
+        return frame;
+    }
+
+    Screen() {
+        frame = new JFrame("Minesweeper");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        screenRes.width=Toolkit.getDefaultToolkit().getScreenSize().width;
-        screenRes.height=Toolkit.getDefaultToolkit().getScreenSize().height;
+        screenRes.width = Toolkit.getDefaultToolkit().getScreenSize().width;
+        screenRes.height = Toolkit.getDefaultToolkit().getScreenSize().height;
 
-        Center obj=new Center(screenRes);
-        obj.setFrameRatio(3,4);
+        Center obj = new Center(screenRes);
+        obj.setFrameRatio(3, 4);
         obj.setFrameOnCenter(frame);
 
-
+        frame.setLayout(null);
         frame.setVisible(true);
-        pane = frame.getContentPane();
+        frame.setAlwaysOnTop(true);
 
+        pane = frame.getContentPane();
         frame.setResizable(false);
     }
 
-
-
-    void clear(){
+    void clear() {
+        pane.removeAll();
         pane.repaint();
     }
 }

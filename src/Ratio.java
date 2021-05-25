@@ -1,7 +1,7 @@
 import javafx.util.Pair;
 
 public class Ratio {
-    static Pair<Integer,Integer> getRatio(double x,double y){
+    static Pair<Integer, Integer> getRatio(double x, double y) {
         System.out.print("[Ratio.getRatio] param: ");
         System.out.println("x = " + x + ", y = " + y);
 
@@ -24,9 +24,10 @@ public class Ratio {
         int Y = (int) (temp2 / x);
 
         System.out.print("Simplified ratio: ");
-        System.out.print("X = " + X+"\t");
+        System.out.print("X = " + X + "\t");
         System.out.println("Y = " + Y);
 
         return new Pair<>(X,Y);
+
     }
 }
