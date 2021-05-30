@@ -9,26 +9,20 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ImageManager {
-    private static final String TAG = "ImageManager";
+public class ImageManager extends Base{
     static Map<String, ImageIcon> map = new HashMap<>();
-    private final int boxSize;
 
-    public ImageManager(int boxSize) {
-        this.boxSize = boxSize;
-    }
-
-    ImageIcon getImage(String path) throws IOException {
-        System.out.print("\n[ImageManager.getImage]\t");
-        System.out.println("path = " + path);
+    public ImageIcon getImage(String path) {
+//        System.out.print("\n[ImageManager.getImage]\t");
+//        System.out.println("path = " + path);
 
         path="/res/img/"+path;
 
         if (map.containsKey(path)) {
-            System.out.println("Target image found in map");
+//            System.out.println("Target image found in map");
             return map.get(path);
         } else {
-            System.out.println("Target image not found in map");
+//            System.out.println("Target image not found in map");
             InputStream imgStream = Frame.class.getResourceAsStream(path);
             ImageIcon ii=null;
             try {
@@ -36,10 +30,10 @@ public class ImageManager {
                 Image image = myImg.getScaledInstance(boxSize, boxSize, Image.SCALE_FAST);
                 ii = new ImageIcon(image);
             } catch (Exception e){
-                System.out.println("Failed to load image: "+path);
+//                System.out.println("Failed to load image: "+path);
                 System.exit(1);
             }
-            System.out.println("Target image loaded from disk");
+//            System.out.println("Target image loaded from disk");
             map.put(path, ii);
             return ii;
         }

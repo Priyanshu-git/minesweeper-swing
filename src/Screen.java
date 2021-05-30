@@ -2,10 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Screen {
-    private JFrame frame;
-    private Container pane;
-    private int minHeight = 768, minWidth = 1024;
-    private Dimension screenRes = new Dimension();
+    private final JFrame frame;
+    private final Container pane;
 
     public JFrame getFrame() {
         return frame;
@@ -14,6 +12,8 @@ public class Screen {
     Screen() {
         frame = new JFrame("Minesweeper");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+        Dimension screenRes = new Dimension();
         screenRes.width = Toolkit.getDefaultToolkit().getScreenSize().width;
         screenRes.height = Toolkit.getDefaultToolkit().getScreenSize().height;
 
@@ -23,7 +23,7 @@ public class Screen {
 
         frame.setLayout(null);
         frame.setVisible(true);
-        frame.setAlwaysOnTop(true);
+//        frame.setAlwaysOnTop(true);
 
         pane = frame.getContentPane();
         frame.setResizable(false);

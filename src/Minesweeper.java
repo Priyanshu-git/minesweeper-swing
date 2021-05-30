@@ -6,6 +6,6 @@ public class Minesweeper {
     public static void main(String[] args) throws IOException {
         Screen screen=new Screen();
         FrameManager manager=new FrameManager();
-        manager.setFrame(FrameManager.GAME, screen.getFrame());
+        manager.setFrame(screen.getFrame());
     }
 }

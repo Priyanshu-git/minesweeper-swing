@@ -1,4 +1,6 @@
-package frame;
+package entity;
+
+import frame.ImageManager;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -7,10 +9,11 @@ public class Box {
     private boolean bomb, flagged, clicked;
     private int value;
     private String imagePath;
-    JButton button;
+    public JButton button;
 
-    public Box() throws IOException {
-        button=new JButton();
+    public Box(String s) throws IOException {
+        button = new JButton();
+        button.setName(s);
         setBomb(false);
         setClicked(false);
         setFlagged(false);
@@ -21,8 +24,10 @@ public class Box {
         return bomb;
     }
 
-    public void setBomb(boolean bomb) {
+    public void setBomb(boolean bomb) throws IOException {
         this.bomb = bomb;
+        setImagePath();
+        setImage();
     }
 
     public boolean isFlagged() {
@@ -60,20 +65,22 @@ public class Box {
 
     private void setImagePath() {
         String p = "";
-        if (clicked){
-            p=String.valueOf(value);
-        }else{
-            if (isFlagged()){
-                p="flagged";
-            }else {
-                p="facingDown";
+        if (clicked) {
+            if (isBomb())
+                p = "bomb";
+            else p = String.valueOf(value);
+        } else {
+            if (isFlagged()) {
+                p = "flagged";
+            } else {
+                p = "facingDown";
             }
         }
         this.imagePath = p + ".png";
     }
 
     public void setImage() throws IOException {
-        ImageManager manager=new ImageManager(FrameManager.getBoxSize());
+        ImageManager manager = new ImageManager();
         button.setIcon(manager.getImage(getImagePath()));
     }
 
