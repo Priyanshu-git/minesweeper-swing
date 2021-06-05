@@ -14,7 +14,7 @@ import java.util.Set;
 
 public class NewGameListener extends Base implements ActionListener {
     Box[][] grid;
-    Set<Coordinate> bombsList;
+    static Set<Coordinate> bombsList;
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -39,13 +39,12 @@ public class NewGameListener extends Base implements ActionListener {
         flags = bombs;
         flagsIndicator.setText("FLAGS: " + flags);
 
-
         initiate();
 
     }
 
     private void initiate() {
-        bombsList = getBombList();
+        bombsList = generateBombList();
         bombsList.forEach(co -> {
 
             int i = co.getI(), j = co.getJ();
@@ -76,7 +75,7 @@ public class NewGameListener extends Base implements ActionListener {
             grid[i][j].setValue(grid[i][j].getValue() + 1);
     }
 
-    public Set<Coordinate> getBombList() {
+    public Set<Coordinate> generateBombList() {
         Set<Coordinate> set = new HashSet<>();
         Random random = new Random();
         while (set.size() < bombs) {
@@ -86,5 +85,9 @@ public class NewGameListener extends Base implements ActionListener {
             set.add(co);
         }
         return set;
+    }
+
+    public Set<Coordinate> getBombsList() {
+        return bombsList;
     }
 }

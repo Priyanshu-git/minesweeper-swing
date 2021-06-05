@@ -1,8 +1,9 @@
+import frame.Base;
+
 import javax.swing.*;
 import java.awt.*;
 
-public class Screen {
-    private final JFrame frame;
+public class Screen extends Base {
     private final Container pane;
 
     public JFrame getFrame() {

@@ -15,7 +15,7 @@ import java.io.InputStream;
 import java.net.URL;
 
 public class FrameManager extends Base {
-    static JPanel gridPanel;
+    public static JPanel gridPanel;
 
     public FrameManager() {
         gridPanel = new JPanel();

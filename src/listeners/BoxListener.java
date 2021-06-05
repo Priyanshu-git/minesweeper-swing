@@ -2,11 +2,15 @@ package listeners;
 
 import entity.Coordinate;
 import frame.Base;
+import frame.FrameManager;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class BoxListener extends Base implements MouseListener {
     @Override
@@ -23,17 +27,30 @@ public class BoxListener extends Base implements MouseListener {
         if (SwingUtilities.isLeftMouseButton(e)) {
             try {
                 grid[i][j].setClicked(true);
+                if (grid[i][j].isBomb())
+                {
+                    for (int ii = 0; ii < row; ii++) {
+                        for (int jj = 0; jj < col; jj++) {
+                            try {
+                                grid[ii][jj].setClicked(true);
+                            } catch (IOException ee) {
+                                ee.printStackTrace();
+                            }
+                        }
+                    }
+                    end("Game Over");
+                }
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
 
         }
         if (SwingUtilities.isRightMouseButton(e)) {
-            if (flags==0) return;
             try {
                 if (grid[i][j].isFlagged()) {
                     flags++;
                 } else {
+                    if (flags == 0) return;
                     flags--;
                 }
                 grid[i][j].setFlagged(!grid[i][j].isFlagged());
@@ -45,6 +62,50 @@ public class BoxListener extends Base implements MouseListener {
             }
         }
         grid[i][j].button.repaint();
+
+        if (flags == 0) check();
+    }
+
+    private void end(String msg) {
+        JDialog dialog = new JDialog(frame, "Title");
+        JLabel label = new JLabel(msg);
+        dialog.setVisible(true);
+        dialog.setLayout(new GridBagLayout());
+
+        Rectangle r=frame.getBounds();
+        dialog.setBounds(r.x,r.y,r.width/2,150);
+        GridBagConstraints c=new GridBagConstraints();
+        c.fill=GridBagConstraints.HORIZONTAL;
+        c.gridy=0;
+        dialog.add(label,c);
+
+        JButton button=new JButton("Close");
+        button.addActionListener(e -> System.exit(0));
+        button.setSize(50,30);
+        c.insets.top=20;
+        c.gridy=1;
+        dialog.add(button,c);
+
+        dialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        FrameManager.gridPanel.removeAll();
+    }
+
+    void check() {
+        Set<Coordinate> set = new NewGameListener().getBombsList();
+        AtomicBoolean flag = new AtomicBoolean(false);
+        set.forEach(coordinate -> {
+            int i = coordinate.getI();
+            int j = coordinate.getJ();
+            if (!grid[i][j].isFlagged()) {
+                flag.set(true);
+            }
+        });
+
+        if (flag.get())
+            return;
+
+        end("Game Completed");
+
     }
 
     @Override
