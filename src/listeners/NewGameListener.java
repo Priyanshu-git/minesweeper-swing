@@ -1,8 +1,8 @@
 package listeners;
 
+import entity.Box;
 import entity.Coordinate;
 import frame.Base;
-import entity.Box;
 import frame.Grid;
 
 import java.awt.event.ActionEvent;
@@ -18,6 +18,9 @@ public class NewGameListener extends Base implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        System.out.println("[NewGameListener.actionPerformed]");
+        System.out.println("e = " + e);
+
         grid = Grid.getGrid();
 
         for (Box[] boxes : grid) {
@@ -33,6 +36,7 @@ public class NewGameListener extends Base implements ActionListener {
                 value.setValue(0);
             }
         }
+        flags=bombs;
 
         initiate();
     }
@@ -48,6 +52,7 @@ public class NewGameListener extends Base implements ActionListener {
                 e.printStackTrace();
             }
         });
+        flagsIndicator.setText("FLAGS: "+ flags);
     }
 
     public Set<Coordinate> getBombList(){
