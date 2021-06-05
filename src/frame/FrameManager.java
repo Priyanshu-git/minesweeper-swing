@@ -1,18 +1,21 @@
 package frame;
 
+import entity.RoundedBorder;
 import listeners.DifficultyListener;
 import listeners.NewGameListener;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeListener;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 
 public class FrameManager extends Base {
     static JPanel gridPanel;
-    static JFrame frame;
 
     public FrameManager() {
         gridPanel = new JPanel();
@@ -80,6 +83,28 @@ public class FrameManager extends Base {
                 }
             }
         });
+
+
+//        HELP BUTTON
+        JButton help=new JButton();
+        help.setBorder(new RoundedBorder(32));
+
+        InputStream imgStream = Frame.class.getResourceAsStream("/res/img/help.png");
+        BufferedImage myImg = ImageIO.read(imgStream);
+        Image image = myImg.getScaledInstance(32, 32, Image.SCALE_FAST);
+
+        help.setIcon(new ImageIcon(image));
+
+        frame.add(help);
+        help.setBounds((int) (frame.getBounds().getWidth()-40),1,32,32);
+        help.addActionListener(e -> {
+            try {
+                Desktop.getDesktop().browse(new URL("https://github.com/Priyanshu-git/minesweeper-swing#readme").toURI());
+            } catch (Exception ew) {
+                ew.printStackTrace();
+            }
+        });
+
 
     }
 

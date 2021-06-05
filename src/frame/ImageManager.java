@@ -30,6 +30,7 @@ public class ImageManager extends Base{
                 ii = new ImageIcon(image);
             } catch (Exception e){
 //                System.out.println("Failed to load image: "+path);
+                e.printStackTrace();
                 System.exit(1);
             }
 //            System.out.println("Target image loaded from disk");
