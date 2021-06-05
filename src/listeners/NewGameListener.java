@@ -36,32 +36,53 @@ public class NewGameListener extends Base implements ActionListener {
                 value.setValue(0);
             }
         }
-        flags=bombs;
+        flags = bombs;
+        flagsIndicator.setText("FLAGS: " + flags);
+
 
         initiate();
+
     }
 
     private void initiate() {
-        bombsList=getBombList();
+        bombsList = getBombList();
         bombsList.forEach(co -> {
-            System.out.println(co.getI()+" "+co.getJ());
+
+            int i = co.getI(), j = co.getJ();
+            System.out.println(i + " " + j);
 
             try {
-                grid[co.getI()][co.getJ()].setBomb(true);
+                grid[i][j].setBomb(true);
+
+                update(i + 1, j);
+                update(i + 1, j + 1);
+                update(i + 1, j - 1);
+                update(i - 1, j + 1);
+                update(i - 1, j);
+                update(i - 1, j - 1);
+                update(i, j - 1);
+                update(i, j + 1);
+
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
         });
-        flagsIndicator.setText("FLAGS: "+ flags);
+
     }
 
-    public Set<Coordinate> getBombList(){
-        Set<Coordinate> set=new HashSet<>();
-        Random random=new Random();
-        while (set.size()<bombs){
-            int i=random.nextInt(row);
-            int j=random.nextInt(col);
-            Coordinate co=new Coordinate(i,j);
+    void update(int i, int j) {
+        if (i < row && i >= 0 && j < col && j >= 0)
+            grid[i][j].setValue(grid[i][j].getValue() + 1);
+    }
+
+    public Set<Coordinate> getBombList() {
+        Set<Coordinate> set = new HashSet<>();
+        Random random = new Random();
+        while (set.size() < bombs) {
+            int i = random.nextInt(row);
+            int j = random.nextInt(col);
+            Coordinate co = new Coordinate(i, j);
             set.add(co);
         }
         return set;

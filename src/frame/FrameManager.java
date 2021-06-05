@@ -1,9 +1,13 @@
 package frame;
 
+import listeners.DifficultyListener;
 import listeners.NewGameListener;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 
 public class FrameManager extends Base {
@@ -48,17 +52,34 @@ public class FrameManager extends Base {
         flagsIndicator.setText("FLAGS: ");
         flagsIndicator.setBounds(LEFT_START-20, 15, 80, 35);
         flagsIndicator.setFont(font);
-//        flagsIndicator.setFont(new Font("",Font.PLAIN,15));
         flagsIndicator.setHorizontalAlignment(SwingConstants.CENTER);
         resetButton.setHorizontalAlignment(SwingConstants.CENTER);
 
-        String[] difficulty ={"EASY - 10","MEDIUM - 15","HARD - 20"};
-        JComboBox<JLabel> cb=new JComboBox(difficulty);
+        String[] difficulty ={"EASY","MEDIUM","HARD"};
+        JComboBox<String> cb=new JComboBox(difficulty);
         cb.setBounds(LEFT_START+(col * boxSize)-110, 20,110,30);
         dashboard.add(cb);
         cb.repaint();
-
+        cb.addItemListener(new DifficultyListener());
         new Grid().setGrid(gridPanel);
+
+        JButton show=new JButton("Show");
+        show.setBounds(1,1,50,30);
+        frame.add(show);
+        show.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                for (int i = 0; i < row; i++) {
+                    for (int j = 0; j < col; j++) {
+                        try {
+                            grid[i][j].setClicked(true);
+                        } catch (IOException ee) {
+                            ee.printStackTrace();
+                        }
+                    }
+                }
+            }
+        });
 
     }
 

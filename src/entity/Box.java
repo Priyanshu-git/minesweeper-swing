@@ -64,7 +64,7 @@ public class Box {
     }
 
     private void setImagePath() {
-        String p = "";
+        String p;
         if (clicked) {
             if (isBomb())
                 p = "bomb";
