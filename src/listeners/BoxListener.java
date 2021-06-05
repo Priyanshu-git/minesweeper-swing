@@ -29,6 +29,7 @@ public class BoxListener extends Base implements MouseListener {
 
         }
         if (SwingUtilities.isRightMouseButton(e)) {
+            if (flags==0) return;
             try {
                 if (grid[i][j].isFlagged()) {
                     flags++;
