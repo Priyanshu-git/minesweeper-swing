@@ -52,6 +52,12 @@ public class FrameManager extends Base {
         flagsIndicator.setHorizontalAlignment(SwingConstants.CENTER);
         resetButton.setHorizontalAlignment(SwingConstants.CENTER);
 
+        String[] difficulty ={"EASY - 10","MEDIUM - 15","HARD - 20"};
+        JComboBox<JLabel> cb=new JComboBox(difficulty);
+        cb.setBounds(LEFT_START+(col * boxSize)-110, 20,110,30);
+        dashboard.add(cb);
+        cb.repaint();
+
         new Grid().setGrid(gridPanel);
 
     }
