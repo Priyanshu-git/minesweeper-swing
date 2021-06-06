@@ -95,7 +95,7 @@ public class FrameManager extends Base {
         help.setBounds((int) (frame.getBounds().getWidth()-40),1,32,32);
         help.addActionListener(e -> {
             try {
-                Desktop.getDesktop().browse(new URL("https://github.com/Priyanshu-git/minesweeper-swing#readme").toURI());
+                Desktop.getDesktop().browse(new URL("https://github.com/Priyanshu-git/minesweeper-swing#instructions-to-play-the-game").toURI());
             } catch (Exception ew) {
                 ew.printStackTrace();
             }
