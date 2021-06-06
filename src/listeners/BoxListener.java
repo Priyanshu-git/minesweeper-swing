@@ -3,6 +3,7 @@ package listeners;
 import entity.Coordinate;
 import frame.Base;
 import frame.FrameManager;
+import frame.Initiate;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,21 +25,25 @@ public class BoxListener extends Base implements MouseListener {
         int i = clickedBox.getI();
         int j = clickedBox.getJ();
 
+        if (moves == 0 && flags == 0) {
+            FrameManager.getNewGameButton().doClick();
+        }
+
         if (SwingUtilities.isLeftMouseButton(e)) {
             try {
                 grid[i][j].setClicked(true);
-                if (grid[i][j].isBomb())
-                {
-                    for (int ii = 0; ii < row; ii++) {
-                        for (int jj = 0; jj < col; jj++) {
-                            try {
-                                grid[ii][jj].setClicked(true);
-                            } catch (IOException ee) {
-                                ee.printStackTrace();
-                            }
-                        }
-                    }
-                    end("Game Over");
+                if (moves == 0) {
+                    Initiate init = new Initiate();
+                    init.exclude(i, j);
+                    init.initiate();
+                    moves++;
+                }
+                if (grid[i][j].isBomb()) {
+                    explode();
+                }
+                if (grid[i][j].getValue() == 0) {
+                    cascade(i, j);
+                    moves++;
                 }
             } catch (IOException ioException) {
                 ioException.printStackTrace();
@@ -66,32 +71,79 @@ public class BoxListener extends Base implements MouseListener {
         if (flags == 0) check();
     }
 
+    private void cascade(int i, int j) throws IOException {
+        neighbours(i - 1, j);
+        neighbours(i, j - 1);
+        neighbours(i, j + 1);
+        neighbours(i + 1, j);
+    }
+
+    private void neighbours(int i, int j) throws IOException {
+        if (i < 0 || i >= row || j < 0 || j >= col) return;
+        if (grid[i][j].isBomb() || grid[i][j].isClicked())
+            return;
+        grid[i][j].setClicked(true);
+
+        if (grid[i][j].getValue() != 0) {
+            click(i + 1, j);
+            click(i - 1, j);
+            click(i, j - 1);
+            click(i, j + 1);
+        }
+
+        neighbours(i - 1, j);
+        neighbours(i, j - 1);
+        neighbours(i, j + 1);
+        neighbours(i + 1, j);
+    }
+
+    private void click(int i, int j) throws IOException {
+        if (i < 0 || i >= row || j < 0 || j >= col) return;
+        if (grid[i][j].isBomb()) return;
+        grid[i][j].setClicked(true);
+    }
+
+    private void explode() {
+        for (int ii = 0; ii < row; ii++) {
+            for (int jj = 0; jj < col; jj++) {
+                try {
+                    grid[ii][jj].setClicked(true);
+                    grid[ii][jj].button.repaint();
+
+                } catch (IOException ee) {
+                    ee.printStackTrace();
+                }
+            }
+        }
+        end("You stepped on a mine. You took "+moves+" clicks");
+    }
+
     private void end(String msg) {
-        JDialog dialog = new JDialog(frame, "Title");
+        JDialog dialog = new JDialog(frame, "Game Over");
         JLabel label = new JLabel(msg);
         dialog.setVisible(true);
         dialog.setLayout(new GridBagLayout());
 
-        Rectangle r=frame.getBounds();
-        dialog.setBounds(r.x,r.y,r.width/2,150);
-        GridBagConstraints c=new GridBagConstraints();
-        c.fill=GridBagConstraints.HORIZONTAL;
-        c.gridy=0;
-        dialog.add(label,c);
+        Rectangle r = frame.getBounds();
+        dialog.setBounds(r.x, r.y, r.width / 2 + 50, 150);
+        GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridy = 0;
+        dialog.add(label, c);
 
-        JButton button=new JButton("Close");
+        JButton button = new JButton("Close");
         button.addActionListener(e -> System.exit(0));
-        button.setSize(50,30);
-        c.insets.top=20;
-        c.gridy=1;
-        dialog.add(button,c);
+        button.setSize(50, 30);
+        c.insets.top = 20;
+        c.gridy = 1;
+        dialog.add(button, c);
 
         dialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        FrameManager.gridPanel.removeAll();
+//        FrameManager.gridPanel.removeAll();
     }
 
     void check() {
-        Set<Coordinate> set = new NewGameListener().getBombsList();
+        Set<Coordinate> set = new Initiate().getBombsList();
         AtomicBoolean flag = new AtomicBoolean(false);
         set.forEach(coordinate -> {
             int i = coordinate.getI();
@@ -104,7 +156,7 @@ public class BoxListener extends Base implements MouseListener {
         if (flag.get())
             return;
 
-        end("Game Completed");
+        end("Game Completed. You took "+moves+" clicks");
 
     }
 

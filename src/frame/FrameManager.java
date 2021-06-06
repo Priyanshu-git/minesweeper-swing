@@ -7,8 +7,6 @@ import listeners.NewGameListener;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,6 +14,7 @@ import java.net.URL;
 
 public class FrameManager extends Base {
     public static JPanel gridPanel;
+    public static JButton newGameButton;
 
     public FrameManager() {
         gridPanel = new JPanel();
@@ -35,10 +34,10 @@ public class FrameManager extends Base {
         dashboard.setBounds(LEFT_START, (int) (0.02 * r.height), (col + 1) * boxSize, 60);
         dashboard.setLayout(null);
 
-        JButton resetButton = new JButton("RESET");
+        newGameButton = new JButton("New Game");
 
         dashboard.add(flagsIndicator);
-        dashboard.add(resetButton);
+        dashboard.add(newGameButton);
         dashboard.setBackground(Color.pink);
         frame.add(dashboard);
         dashboard.updateUI();
@@ -47,16 +46,16 @@ public class FrameManager extends Base {
         gridPanel.setBackground(Color.RED);
         gridPanel.repaint();
 
-        resetButton.setBounds((dashboard.getBounds().width / 2) - 40, 10, 80, 40);
-        resetButton.setFont(font);
-        resetButton.addActionListener(new NewGameListener());
+        newGameButton.setBounds((dashboard.getBounds().width / 2) - 55, 10, 110, 40);
+        newGameButton.setFont(font);
+        newGameButton.addActionListener(new NewGameListener());
 
 
         flagsIndicator.setText("FLAGS: ");
         flagsIndicator.setBounds(LEFT_START-20, 15, 80, 35);
         flagsIndicator.setFont(font);
         flagsIndicator.setHorizontalAlignment(SwingConstants.CENTER);
-        resetButton.setHorizontalAlignment(SwingConstants.CENTER);
+        newGameButton.setHorizontalAlignment(SwingConstants.CENTER);
 
         String[] difficulty ={"EASY","MEDIUM","HARD"};
         JComboBox<String> cb=new JComboBox(difficulty);
@@ -66,23 +65,20 @@ public class FrameManager extends Base {
         cb.addItemListener(new DifficultyListener());
         new Grid().setGrid(gridPanel);
 
-        JButton show=new JButton("Show");
-        show.setBounds(1,1,50,30);
-        frame.add(show);
-        show.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                for (int i = 0; i < row; i++) {
-                    for (int j = 0; j < col; j++) {
-                        try {
-                            grid[i][j].setClicked(true);
-                        } catch (IOException ee) {
-                            ee.printStackTrace();
-                        }
-                    }
-                }
-            }
-        });
+//        JButton show=new JButton("Show");
+//        show.setBounds(1,1,50,30);
+//        frame.add(show);
+//        show.addActionListener(e -> {
+//            for (int i = 0; i < row; i++) {
+//                for (int j = 0; j < col; j++) {
+//                    try {
+//                        grid[i][j].setClicked(true);
+//                    } catch (IOException ee) {
+//                        ee.printStackTrace();
+//                    }
+//                }
+//            }
+//        });
 
 
 //        HELP BUTTON
@@ -104,8 +100,17 @@ public class FrameManager extends Base {
                 ew.printStackTrace();
             }
         });
+        help.setToolTipText("Help");
 
+
+        JLabel label=new JLabel("RMB: play         LMB: flag a box");
+        label.setBounds(dashboard.getX(),dashboard.getY()+dashboard.getHeight()-5,500,30);
+        frame.add(label);
+        label.repaint();
 
     }
 
+    public static JButton getNewGameButton() {
+        return newGameButton;
+    }
 }
