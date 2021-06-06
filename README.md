@@ -15,11 +15,13 @@ Minesweeper is similar to a Sudoku puzzle in that your success is largely contin
 - **To win the game, flag all the squares that have mines beneath them.**
 
 ## Pre-requisites
-1. Java 8 or higher version installed on system.
-2. An IDE like IntelliJ (recommended) or Eclipse.
+- Java 8 or higher version (See [here](https://www.guru99.com/install-java.html))
+- Github (See [here](https://phoenixnap.com/kb/how-to-install-git-windows))
+
 
 ## To run the game locally 
-1. Clone this repository locally.\
-In CMD, run `git clone https://github.com/Priyanshu-git/minesweeper-swing.git`
-2. Open the folder as project in IntelliJ or Eclipse
-3. Run the main method in [Minesweeper.java](https://github.com/Priyanshu-git/minesweeper-swing/blob/main/src/Minesweeper.java)
+
+1. In CMD, run `git clone https://github.com/Priyanshu-git/minesweeper-swing.git` to clone this repository locally.
+2. Open minesweeper-swing folder. In CMD, run: `start minesweeper-swing`
+3. Run [LAUNCHER.cmd](https://github.com/Priyanshu-git/minesweeper-swing/blob/main/LAUNCHER.cmd) file
+4. Select the difficulty level and click on "New Game" button and start playing!
