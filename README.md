@@ -16,7 +16,7 @@ Minesweeper is similar to a Sudoku puzzle in that your success is largely contin
 
 ## Pre-requisites
 - Java 8 or higher version (See [here](https://www.guru99.com/install-java.html))
-- Github (See [here](https://phoenixnap.com/kb/how-to-install-git-windows))
+- Github (optional) (See [here](https://phoenixnap.com/kb/how-to-install-git-windows))
 
 
 ## To run the game locally 
@@ -25,3 +25,5 @@ Minesweeper is similar to a Sudoku puzzle in that your success is largely contin
 2. Open minesweeper-swing folder. In CMD, run: `start minesweeper-swing`
 3. Run [LAUNCHER.cmd](https://github.com/Priyanshu-git/minesweeper-swing/blob/main/LAUNCHER.cmd) file
 4. Select the difficulty level and click on "New Game" button and start playing!
+
+** If you don't have github installed, just [download](https://github.com/Priyanshu-git/minesweeper-swing/archive/refs/heads/main.zip) this repository as zip file and extract it. Then follow from step 2 **
