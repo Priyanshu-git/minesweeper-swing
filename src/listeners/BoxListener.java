@@ -25,14 +25,15 @@ public class BoxListener extends Base implements MouseListener {
         int i = clickedBox.getI();
         int j = clickedBox.getJ();
 
-        if (moves == 0 && flags == 0) {
+        if (moves == 1 && flags == 0) {
             FrameManager.getNewGameButton().doClick();
         }
 
         if (SwingUtilities.isLeftMouseButton(e)) {
             try {
                 grid[i][j].setClicked(true);
-                if (moves == 0) {
+                moves++;
+                if (moves == 1) {
                     Initiate init = new Initiate();
                     init.exclude(i, j);
                     init.initiate();
@@ -43,7 +44,6 @@ public class BoxListener extends Base implements MouseListener {
                 }
                 if (grid[i][j].getValue() == 0) {
                     cascade(i, j);
-                    moves++;
                 }
             } catch (IOException ioException) {
                 ioException.printStackTrace();

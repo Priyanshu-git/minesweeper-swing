@@ -8,6 +8,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -22,16 +23,14 @@ public class FrameManager extends Base {
 
     public void setFrame(JFrame frame) throws IOException {
         System.out.println("[FrameManager.setFrame]");
-        Font font = new Font("Times New Roman", Font.PLAIN, 16);
 
         frame.setBackground(Color.GRAY);
-        Rectangle r = frame.getBounds();
         frame.add(gridPanel);
 
-        int LEFT_START = (int) (0.06 * r.width);
+        int HALF_BOX = (int) (0.5 * boxSize);
 
         JPanel dashboard = new JPanel();
-        dashboard.setBounds(LEFT_START, (int) (0.02 * r.height), (col + 1) * boxSize, 60);
+        dashboard.setBounds(HALF_BOX, boxSize, (col + 1) * boxSize, boxSize);
         dashboard.setLayout(null);
 
         newGameButton = new JButton("New Game");
@@ -42,57 +41,44 @@ public class FrameManager extends Base {
         frame.add(dashboard);
         dashboard.updateUI();
 
-        gridPanel.setBounds(LEFT_START, (int) (0.14 * r.height), (col + 1) * boxSize, (row + 1) * boxSize);
+        gridPanel.setBounds(HALF_BOX, 5*HALF_BOX, (col + 1) * boxSize, (row + 1) * boxSize);
         gridPanel.setBackground(Color.RED);
         gridPanel.repaint();
 
-        newGameButton.setBounds((dashboard.getBounds().width / 2) - 55, 10, 110, 40);
-        newGameButton.setFont(font);
+        int BUTTON_SIZE = 36;
+        newGameButton.setBounds((dashboard.getBounds().width / 2) - BUTTON_SIZE, 5, BUTTON_SIZE*2, BUTTON_SIZE);
+        newGameButton.setMargin(new Insets(0,0,0,0));
         newGameButton.addActionListener(new NewGameListener());
 
 
         flagsIndicator.setText("FLAGS: ");
-        flagsIndicator.setBounds(LEFT_START-20, 15, 80, 35);
-        flagsIndicator.setFont(font);
+        flagsIndicator.setBounds(HALF_BOX - 20, 5, 80, 35);
         flagsIndicator.setHorizontalAlignment(SwingConstants.CENTER);
         newGameButton.setHorizontalAlignment(SwingConstants.CENTER);
 
-        String[] difficulty ={"EASY","MEDIUM","HARD"};
-        JComboBox<String> cb=new JComboBox(difficulty);
-        cb.setBounds(LEFT_START+(col * boxSize)-110, 20,110,30);
+        String[] difficulty = {"EASY", "MEDIUM", "HARD"};
+        JComboBox<String> cb = new JComboBox(difficulty);
+        cb.setBounds(HALF_BOX + ((col - 2) * boxSize), 10, 2 * boxSize, 25);
         dashboard.add(cb);
         cb.repaint();
         cb.addItemListener(new DifficultyListener());
         new Grid().setGrid(gridPanel);
 
-//        JButton show=new JButton("Show");
-//        show.setBounds(1,1,50,30);
-//        frame.add(show);
-//        show.addActionListener(e -> {
-//            for (int i = 0; i < row; i++) {
-//                for (int j = 0; j < col; j++) {
-//                    try {
-//                        grid[i][j].setClicked(true);
-//                    } catch (IOException ee) {
-//                        ee.printStackTrace();
-//                    }
-//                }
-//            }
-//        });
-
 
 //        HELP BUTTON
-        JButton help=new JButton();
+        JButton help = new JButton();
         help.setBorder(new RoundedBorder(32));
 
-        InputStream imgStream = Frame.class.getResourceAsStream("/res/img/help.png");
-        BufferedImage myImg = ImageIO.read(imgStream);
-        Image image = myImg.getScaledInstance(32, 32, Image.SCALE_FAST);
+
+//        InputStream imgStream = Frame.class.getResourceAsStream("/res/img/help.png");
+//        BufferedImage myImg = ImageIO.read(imgStream);
+        BufferedImage myImg = ImageIO.read(new File("res/img/help.png"));
+        Image image = myImg.getScaledInstance(32, 32, Image.SCALE_REPLICATE);
 
         help.setIcon(new ImageIcon(image));
 
         frame.add(help);
-        help.setBounds((int) (frame.getBounds().getWidth()-40),1,32,32);
+        help.setBounds( (col+1)*boxSize-HALF_BOX, 5, 32, 32);
         help.addActionListener(e -> {
             try {
                 Desktop.getDesktop().browse(new URL("https://github.com/Priyanshu-git/minesweeper-swing#instructions-to-play-the-game").toURI());
@@ -101,10 +87,12 @@ public class FrameManager extends Base {
             }
         });
         help.setToolTipText("Help");
+        help.repaint();
+        help.updateUI();
 
 
-        JLabel label=new JLabel("RMB: play         LMB: flag a box");
-        label.setBounds(dashboard.getX(),dashboard.getY()+dashboard.getHeight()-5,500,30);
+        JLabel label = new JLabel("RMB: play         LMB: flag");
+        label.setBounds(dashboard.getX(), dashboard.getY() + dashboard.getHeight() - 5, boxSize*(col-3), 30);
         frame.add(label);
         label.repaint();
 

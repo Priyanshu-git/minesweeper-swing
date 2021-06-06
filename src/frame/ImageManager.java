@@ -4,6 +4,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,7 +16,7 @@ public class ImageManager extends Base{
 //        System.out.print("\n[ImageManager.getImage]\t");
 //        System.out.println("path = " + path);
 
-        path="/res/img/"+path;
+        path="res/img/"+path;
 
         if (map.containsKey(path)) {
 //            System.out.println("Target image found in map");
@@ -25,7 +26,8 @@ public class ImageManager extends Base{
             InputStream imgStream = Frame.class.getResourceAsStream(path);
             ImageIcon ii=null;
             try {
-                BufferedImage myImg = ImageIO.read(imgStream);
+//                BufferedImage myImg = ImageIO.read(imgStream);
+                BufferedImage myImg = ImageIO.read(new File(path));
                 Image image = myImg.getScaledInstance(boxSize, boxSize, Image.SCALE_FAST);
                 ii = new ImageIcon(image);
             } catch (Exception e){

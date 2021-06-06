@@ -1,9 +1,10 @@
-import javafx.util.Pair;
+import entity.Coordinate;
+import frame.Base;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class Center {
+public class Center extends Base {
 
     private final int screenWidth;
     private final int screenHeight;
@@ -27,9 +28,9 @@ public class Center {
     }
 
     void setFrameRatio(double x, double y) {
-        Pair<Integer, Integer> pair = Ratio.getRatio(x, y);
-        r1 = pair.getKey();
-        r2 = pair.getValue();
+        Coordinate pair = Ratio.getRatio(x, y);
+        r1 = pair.getI();
+        r2 = pair.getJ();
     }
 
     void setFrameOnCenter(JFrame frame) {
@@ -43,9 +44,7 @@ public class Center {
     }
 
     private Dimension frameSize() {
-        int factor = (int) (screenHeight * 0.65);
-        factor = factor / r2;
-        return new Dimension(r1 * factor, r2 * factor);
+        return new Dimension(boxSize*(col+2),boxSize*(row+5));
     }
 
     private Dimension getCenterCoordinates() {

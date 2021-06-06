@@ -1,7 +1,8 @@
+import entity.Coordinate;
 import javafx.util.Pair;
 
 public class Ratio {
-    static Pair<Integer, Integer> getRatio(double x, double y) {
+    static Coordinate getRatio(double x, double y) {
         System.out.print("[Ratio.getRatio] param: ");
         System.out.println("x = " + x + ", y = " + y);
 
@@ -27,7 +28,7 @@ public class Ratio {
         System.out.print("X = " + X + "\t");
         System.out.println("Y = " + Y);
 
-        return new Pair<>(X,Y);
+        return new Coordinate(X,Y);
 
     }
 }
